@@ -1,0 +1,53 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "JsonEditor",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "Stars",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "Stars2025",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "AgenticWorkforce",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "family-tree-explorer",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "TimeForge",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "TimeForge-Tauri",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "tauri:dev"],
+      "port": 5173
+    },
+    {
+      "name": "MCPServer",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["sfdc_mcp_server.py"],
+      "port": 8003
+    }
+  ]
+}
