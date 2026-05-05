@@ -4,7 +4,21 @@
       "Bash(npm install *)",
       "Bash(npm run *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173)",
-      "Bash(npx tauri *)"
+      "Bash(npx tauri *)",
+      "Bash(cat)",
+      "Bash(base64 -d /tmp/icon_b64.txt)",
+      "Bash(python -c \"from PIL import Image, ImageDraw, ImageFont; print\\('ok'\\)\")",
+      "Bash(python3 -c \"from PIL import Image; print\\('ok'\\)\")",
+      "Bash(py -3 -c \"from PIL import Image; print\\('ok'\\)\")",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(taskkill /F /IM app.exe)",
+      "Bash(CARGO_HTTP_CHECK_REVOKE=false npm run tauri:build)",
+      "Bash(powershell -Command \"Stop-Process -Name app -Force -ErrorAction SilentlyContinue\")",
+      "Bash(node --input-type=module --eval \"import\\('./src/App.jsx'\\).catch\\(e=>console.error\\(e.message\\)\\)\")",
+      "Bash(npx --yes acorn --ecma2022 --module src/App.jsx)",
+      "Bash(npx acorn *)",
+      "Bash(npx vite *)"
     ]
   }
 }
