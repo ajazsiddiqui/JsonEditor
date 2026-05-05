@@ -8,12 +8,12 @@ function highlightJson(str) {
   return esc.replace(
     /("(?:\\u[0-9a-fA-F]{4}|\\[^u]|[^\\"])*")\s*:|("(?:\\u[0-9a-fA-F]{4}|\\[^u]|[^\\"])*")|\b(true|false)\b|\b(null)\b|(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)|([{}[\],:])/g,
     (_, key, str, bool, nil, num, punct) => {
-      if (key  !== undefined) return `<span style="color:#7a9ec0">${key}</span>:`;
-      if (str  !== undefined) return `<span style="color:#7ec27e">${str}</span>`;
-      if (bool !== undefined) return `<span style="color:#b07aba">${bool}</span>`;
-      if (nil  !== undefined) return `<span style="color:#666">${nil}</span>`;
-      if (num  !== undefined) return `<span style="color:#c09a5a">${num}</span>`;
-      if (punct!== undefined) return `<span style="color:#555">${punct}</span>`;
+      if (key  !== undefined) return `<span style="color:var(--c-key)">${key}</span>:`;
+      if (str  !== undefined) return `<span style="color:var(--c-str)">${str}</span>`;
+      if (bool !== undefined) return `<span style="color:var(--c-bool)">${bool}</span>`;
+      if (nil  !== undefined) return `<span style="color:var(--c-nil)">${nil}</span>`;
+      if (num  !== undefined) return `<span style="color:var(--c-num)">${num}</span>`;
+      if (punct!== undefined) return `<span style="color:var(--c-punct)">${punct}</span>`;
       return _;
     }
   );
@@ -39,16 +39,24 @@ function insertMatchMarkers(str, matches, currentIdx) {
 }
 
 const C = {
-  bg: "#111", surface: "#1a1a1a", border: "#2a2a2a",
-  text: "#ccc", muted: "#555", key: "#7a9ec0",
-  str: "#7ec27e", num: "#c09a5a", bool: "#b07aba", nil: "#666",
-  ok: "#4caf7d", err: "#e06060",
+  bg:      "var(--c-bg)",
+  surface: "var(--c-surface)",
+  border:  "var(--c-border)",
+  text:    "var(--c-text)",
+  muted:   "var(--c-muted)",
+  key:     "var(--c-key)",
+  str:     "var(--c-str)",
+  num:     "var(--c-num)",
+  bool:    "var(--c-bool)",
+  nil:     "var(--c-nil)",
+  ok:      "var(--c-ok)",
+  err:     "var(--c-err)",
 };
 
 const S = {
-  btn: { background:"#222", border:"0.5px solid #333", color:"#aaa", padding:"4px 12px", borderRadius:3, cursor:"pointer", fontSize:12, fontFamily:"monospace" },
-  small: { background:"#1c1c1c", border:"0.5px solid #333", color:"#888", padding:"1px 6px", borderRadius:3, cursor:"pointer", fontSize:10, fontFamily:"monospace" },
-  del: { background:"#1c1c1c", border:"0.5px solid #5a2020", color:"#a04040", padding:"1px 6px", borderRadius:3, cursor:"pointer", fontSize:10, fontFamily:"monospace" },
+  btn:   { background:"var(--c-btn-bg)",    border:"0.5px solid var(--c-btn-border)",  color:"var(--c-btn-text)", padding:"4px 12px", borderRadius:3, cursor:"pointer", fontSize:12, fontFamily:"monospace" },
+  small: { background:"var(--c-btn-sm-bg)", border:"0.5px solid var(--c-btn-border)",  color:"var(--c-muted)",    padding:"1px 6px",  borderRadius:3, cursor:"pointer", fontSize:10, fontFamily:"monospace" },
+  del:   { background:"var(--c-btn-sm-bg)", border:"0.5px solid var(--c-del-border)",  color:"var(--c-del-text)", padding:"1px 6px",  borderRadius:3, cursor:"pointer", fontSize:10, fontFamily:"monospace" },
 };
 
 function cloneSet(root, path, val) {
@@ -164,10 +172,10 @@ function FoldableRaw({ parsed, folded, onToggle, selectedPk, selectSeq }) {
   }, [selectedPk]);
 
   function Prim({ v }) {
-    if (v === null) return <span style={{color:"#666"}}>null</span>;
-    if (typeof v === "boolean") return <span style={{color:"#b07aba"}}>{String(v)}</span>;
-    if (typeof v === "number") return <span style={{color:"#c09a5a"}}>{v}</span>;
-    return <span style={{color:"#7ec27e"}}>{JSON.stringify(v)}</span>;
+    if (v === null) return <span style={{color:"var(--c-nil)"}}>null</span>;
+    if (typeof v === "boolean") return <span style={{color:"var(--c-bool)"}}>{String(v)}</span>;
+    if (typeof v === "number") return <span style={{color:"var(--c-num)"}}>{v}</span>;
+    return <span style={{color:"var(--c-str)"}}>{JSON.stringify(v)}</span>;
   }
 
   const rows = [];
@@ -187,7 +195,7 @@ function FoldableRaw({ parsed, folded, onToggle, selectedPk, selectSeq }) {
     const cb = isArr ? "]" : "}";
 
     if (entries.length === 0) {
-      rows.push({ indent, keyNode, valueNode: <span style={{color:"#555"}}>{ob}{cb}</span>, comma: !isLast, pk: null, rowPk: pk });
+      rows.push({ indent, keyNode, valueNode: <span style={{color:"var(--c-punct)"}}>{ob}{cb}</span>, comma: !isLast, pk: null, rowPk: pk });
       return;
     }
 
@@ -198,9 +206,9 @@ function FoldableRaw({ parsed, folded, onToggle, selectedPk, selectSeq }) {
         indent, keyNode,
         valueNode: (
           <>
-            <span style={{color:"#555"}}>{ob}</span>
-            <span style={{color:"#555", cursor:"pointer"}} onClick={e => { e.stopPropagation(); onToggle(pk); }}>…</span>
-            <span style={{color:"#555"}}>{cb}</span>
+            <span style={{color:"var(--c-punct)"}}>{ob}</span>
+            <span style={{color:"var(--c-punct)", cursor:"pointer"}} onClick={e => { e.stopPropagation(); onToggle(pk); }}>…</span>
+            <span style={{color:"var(--c-punct)"}}>{cb}</span>
           </>
         ),
         comma: !isLast, pk, isFolded: true, rowPk: pk
@@ -208,41 +216,41 @@ function FoldableRaw({ parsed, folded, onToggle, selectedPk, selectSeq }) {
       return;
     }
 
-    rows.push({ indent, keyNode, valueNode: <span style={{color:"#555"}}>{ob}</span>, comma: false, pk, isFolded: false, rowPk: pk });
+    rows.push({ indent, keyNode, valueNode: <span style={{color:"var(--c-punct)"}}>{ob}</span>, comma: false, pk, isFolded: false, rowPk: pk });
 
     entries.forEach(([k, v], i) => {
       const kn = isArr ? null : (
-        <><span style={{color:"#7a9ec0"}}>"{String(k)}"</span><span style={{color:"#555"}}>: </span></>
+        <><span style={{color:"var(--c-key)"}}>"{String(k)}"</span><span style={{color:"var(--c-punct)"}}>: </span></>
       );
       walk(v, [...path, k], indent + 1, kn, i === entries.length - 1);
     });
 
-    rows.push({ indent, keyNode: null, valueNode: <span style={{color:"#555"}}>{cb}</span>, comma: !isLast, pk: null, rowPk: null });
+    rows.push({ indent, keyNode: null, valueNode: <span style={{color:"var(--c-punct)"}}>{cb}</span>, comma: !isLast, pk: null, rowPk: null });
   }
 
   if (parsed !== null) walk(parsed, [], 0, null, true);
 
   return (
-    <div style={{ margin:0, padding:12, fontFamily:"monospace", fontSize:13, lineHeight:1.6, background:"#111", color:"#ccc", overflow:"auto", height:"100%", boxSizing:"border-box" }}>
+    <div style={{ margin:0, padding:12, fontFamily:"monospace", fontSize:13, lineHeight:1.6, background:"var(--c-bg)", color:"var(--c-text)", overflow:"auto", height:"100%", boxSizing:"border-box" }}>
       {rows.map((row, i) => {
         const isSelected = row.rowPk !== null && row.rowPk === selectedPk;
         return (
           <div
             key={i}
             ref={isSelected ? selectedRowRef : null}
-            style={{ position:"relative", display:"flex", alignItems:"center", minHeight:"1.6em", borderRadius:2, background: isSelected ? "rgba(122,158,192,0.13)" : "transparent" }}
+            style={{ position:"relative", display:"flex", alignItems:"center", minHeight:"1.6em", borderRadius:2, background: isSelected ? "var(--c-sel-bg)" : "transparent" }}
           >
             {isSelected && <div key={selectSeq} className="hl-flash" />}
             <span style={{ whiteSpace:"pre", flexShrink:0 }}>{" ".repeat(row.indent * 2)}</span>
             <span
-              style={{ width:12, flexShrink:0, textAlign:"center", fontSize:9, color:"#555", cursor: row.pk !== null ? "pointer" : "default", userSelect:"none" }}
+              style={{ width:12, flexShrink:0, textAlign:"center", fontSize:9, color:"var(--c-muted)", cursor: row.pk !== null ? "pointer" : "default", userSelect:"none" }}
               onClick={row.pk !== null ? e => { e.stopPropagation(); onToggle(row.pk); } : undefined}
             >
               {row.pk !== null ? (row.isFolded ? "▸" : "▾") : ""}
             </span>
             {row.keyNode}
             {row.valueNode}
-            {row.comma && <span style={{color:"#555"}}>,</span>}
+            {row.comma && <span style={{color:"var(--c-punct)"}}>,</span>}
           </div>
         );
       })}
@@ -290,7 +298,7 @@ function Node({ val, path, root, onUpdate, treeForce, onSelect, selectedPk, sele
           onChange={e => setKeyDraft(e.target.value)}
           onBlur={e => commitKey(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter") commitKey(keyDraft); if (e.key === "Escape") setEditingKey(false); }}
-          style={{ background:"#1c1c1c", border:"0.5px solid #7a9ec0", color:C.key, padding:"1px 5px", borderRadius:3, fontFamily:"monospace", fontSize:12, outline:"none", minWidth:60 }}
+          style={{ background:"var(--c-btn-sm-bg)", border:"0.5px solid var(--c-key)", color:"var(--c-key)", padding:"1px 5px", borderRadius:3, fontFamily:"monospace", fontSize:12, outline:"none", minWidth:60 }}
         />
       ) : (
         <span
@@ -301,13 +309,13 @@ function Node({ val, path, root, onUpdate, treeForce, onSelect, selectedPk, sele
           {typeof key === "number" ? key : `"${key}"`}
         </span>
       )}
-      <span style={{ color: "#444", margin: "0 2px" }}>:</span>
+      <span style={{ color: "var(--c-dim)", margin: "0 2px" }}>:</span>
     </>
   );
 
   let valEl;
   if (isObj) {
-    valEl = <span style={{ color: C.muted, fontSize: 11 }}>{isArr ? `[ ${val.length} ]` : `{ ${Object.keys(val).length} }`}</span>;
+    valEl = <span style={{ color: "var(--c-muted)", fontSize: 11 }}>{isArr ? `[ ${val.length} ]` : `{ ${Object.keys(val).length} }`}</span>;
   } else if (editing) {
     valEl = (
       <input
@@ -316,7 +324,7 @@ function Node({ val, path, root, onUpdate, treeForce, onSelect, selectedPk, sele
         onChange={e => setDraft(e.target.value)}
         onBlur={e => commit(e.target.value)}
         onKeyDown={e => { if (e.key === "Enter") commit(draft); if (e.key === "Escape") setEditing(false); }}
-        style={{ background:"#1c1c1c", border:"0.5px solid #555", color:"#ccc", padding:"1px 5px", borderRadius:3, fontFamily:"monospace", fontSize:12, outline:"none", minWidth:60 }}
+        style={{ background:"var(--c-btn-sm-bg)", border:"0.5px solid var(--c-muted)", color:"var(--c-text)", padding:"1px 5px", borderRadius:3, fontFamily:"monospace", fontSize:12, outline:"none", minWidth:60 }}
       />
     );
   } else {
@@ -343,13 +351,13 @@ function Node({ val, path, root, onUpdate, treeForce, onSelect, selectedPk, sele
   return (
     <div style={{ margin:"1px 0" }}>
       <div
-        style={{ display:"flex", alignItems:"center", gap:4, padding:"2px 4px", borderRadius:3, minHeight:22, background: isSelected ? "rgba(122,158,192,0.13)" : hovered ? "#1e1e1e" : "transparent" }}
+        style={{ display:"flex", alignItems:"center", gap:4, padding:"2px 4px", borderRadius:3, minHeight:22, background: isSelected ? "var(--c-sel-bg)" : hovered ? "var(--c-hover)" : "transparent" }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onClick={() => onSelect?.(path)}
       >
         <span
-          style={{ width:14, fontSize:10, color:"#555", cursor: isObj ? "pointer" : "default", userSelect:"none", textAlign:"center", flexShrink:0 }}
+          style={{ width:14, fontSize:10, color:"var(--c-muted)", cursor: isObj ? "pointer" : "default", userSelect:"none", textAlign:"center", flexShrink:0 }}
           onClick={e => { e.stopPropagation(); isObj && setOpen(o => !o); }}
         >
           {isObj ? (open ? "▾" : "▸") : "·"}
@@ -359,7 +367,7 @@ function Node({ val, path, root, onUpdate, treeForce, onSelect, selectedPk, sele
         {acts}
       </div>
       {isObj && open && (
-        <div style={{ paddingLeft:18, borderLeft:"0.5px solid #222", marginLeft:7 }}>
+        <div style={{ paddingLeft:18, borderLeft:"0.5px solid var(--c-indent-line)", marginLeft:7 }}>
           {(isArr ? val.map((v,i) => [i,v]) : Object.entries(val)).map(([k,v]) => (
             <Node key={String(k)} val={v} path={[...path, k]} root={root} onUpdate={onUpdate} treeForce={treeForce} onSelect={onSelect} selectedPk={selectedPk} selectSeq={selectSeq} />
           ))}
@@ -384,6 +392,11 @@ export default function App() {
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const [currentFileName, setCurrentFileName] = useState(null);
+  const [theme, setTheme] = useState("dark");
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   // Find / replace state
   const [findOpen, setFindOpen] = useState(false);
@@ -687,9 +700,9 @@ export default function App() {
   // ── Shared input style for find/replace bars ──────────────────────────────
   const findInputStyle = {
     flex: 1,
-    background: "#0c0c0c",
-    border: "0.5px solid #2e2e2e",
-    color: "#ccc",
+    background: "var(--c-input-bg)",
+    border: "0.5px solid var(--c-border-find)",
+    color: "var(--c-text)",
     padding: "3px 8px",
     borderRadius: 3,
     fontFamily: "monospace",
@@ -698,17 +711,17 @@ export default function App() {
   };
 
   return (
-    <div style={{ background:C.bg, color:C.text, fontFamily:"monospace", fontSize:13, height:"100vh", display:"flex", flexDirection:"column" }}>
+    <div style={{ background:"var(--c-bg)", color:"var(--c-text)", fontFamily:"monospace", fontSize:13, height:"100vh", display:"flex", flexDirection:"column" }}>
       {/* ── Title bar ──────────────────────────────────────────────────── */}
       <div
         data-tauri-drag-region
-        style={{ display:"flex", alignItems:"center", gap:8, padding:"0 0 0 12px", background:C.surface, borderBottom:`0.5px solid ${C.border}`, flexShrink:0, height:38, userSelect:"none" }}
+        style={{ display:"flex", alignItems:"center", gap:8, padding:"0 0 0 12px", background:"var(--c-surface)", borderBottom:"0.5px solid var(--c-border)", flexShrink:0, height:38, userSelect:"none" }}
       >
-        <span data-tauri-drag-region style={{ fontSize:11, color:C.muted, letterSpacing:"0.05em" }}>
+        <span data-tauri-drag-region style={{ fontSize:11, color:"var(--c-muted)", letterSpacing:"0.05em" }}>
           JsonEditor made with ❤️ by ajazsiddiqui
         </span>
         {currentFileName && (
-          <span data-tauri-drag-region style={{ fontSize:11, color:"#3a5a3a", letterSpacing:"0.03em", maxWidth:220, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+          <span data-tauri-drag-region style={{ fontSize:11, color:"var(--c-ok)", opacity:0.75, letterSpacing:"0.03em", maxWidth:220, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
             — {currentFileName}
           </span>
         )}
@@ -719,31 +732,36 @@ export default function App() {
         <button style={{ ...S.btn, opacity: canRedo ? 1 : 0.3 }} onClick={redo} disabled={!canRedo} title="Ctrl+Y">↪ redo</button>
         <button style={S.btn} onClick={format}>format</button>
         <button style={S.btn} onClick={minify}>minify</button>
-        <button style={{ ...S.btn, borderColor:"#5a2020", color:"#c05050" }} onClick={clear}>clear</button>
+        <button style={{ ...S.btn, borderColor:"var(--c-clear-border)", color:"var(--c-clear-text)" }} onClick={clear}>clear</button>
+        <button
+          onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
+          title="toggle theme"
+          style={{ background:"transparent", border:"none", cursor:"pointer", fontSize:16, padding:"0 4px", lineHeight:1, display:"flex", alignItems:"center" }}
+        >{theme === "dark" ? "☀️" : "🌙"}</button>
         {status && !error && (
-          <span style={{ fontSize:11, padding:"3px 8px", borderRadius:3, background:"#0f2a1a", color:C.ok, border:"0.5px solid #1a4a2a" }}>{status}</span>
+          <span style={{ fontSize:11, padding:"3px 8px", borderRadius:3, background:"var(--c-ok-bg)", color:"var(--c-ok)", border:"0.5px solid var(--c-ok-border)" }}>{status}</span>
         )}
         {error && (
-          <span style={{ fontSize:11, padding:"3px 8px", borderRadius:3, background:"#2a0f0f", color:C.err, border:"0.5px solid #4a1a1a", maxWidth:280, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{error}</span>
+          <span style={{ fontSize:11, padding:"3px 8px", borderRadius:3, background:"var(--c-err-bg)", color:"var(--c-err)", border:"0.5px solid var(--c-err-border)", maxWidth:280, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{error}</span>
         )}
         {/* Window controls */}
         <div style={{ display:"flex", alignSelf:"stretch", marginLeft:4 }}>
           <button onClick={() => appWindow?.minimize()}
-            style={{ width:46, height:"100%", background:"transparent", border:"none", color:"#666", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}
-            onMouseEnter={e => e.currentTarget.style.background="#2a2a2a"}
+            style={{ width:46, height:"100%", background:"transparent", border:"none", color:"var(--c-muted)", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}
+            onMouseEnter={e => e.currentTarget.style.background="var(--c-hover2)"}
             onMouseLeave={e => e.currentTarget.style.background="transparent"}
           >─</button>
           <button onClick={() => appWindow?.toggleMaximize()}
             style={{ width:46, height:"100%", background:"transparent", border:"none", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}
-            onMouseEnter={e => e.currentTarget.style.background="#2a2a2a"}
+            onMouseEnter={e => e.currentTarget.style.background="var(--c-hover2)"}
             onMouseLeave={e => e.currentTarget.style.background="transparent"}
           >
-            <div style={{ width:10, height:10, border:"1.5px solid #666", borderRadius:1 }} />
+            <div style={{ width:10, height:10, border:"1.5px solid var(--c-muted)", borderRadius:1 }} />
           </button>
           <button onClick={() => appWindow?.close()}
-            style={{ width:46, height:"100%", background:"transparent", border:"none", color:"#666", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}
+            style={{ width:46, height:"100%", background:"transparent", border:"none", color:"var(--c-muted)", fontSize:16, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}
             onMouseEnter={e => { e.currentTarget.style.background="#c0392b"; e.currentTarget.style.color="#fff"; }}
-            onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.color="#666"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.color="var(--c-muted)"; }}
           >✕</button>
         </div>
       </div>
@@ -752,28 +770,28 @@ export default function App() {
       <div ref={splitContainerRef} style={{ display:"flex", flex:1, overflow:"hidden" }}>
 
         {/* ── Raw JSON panel ──────────────────────────────────────────── */}
-        <div style={{ width:`${splitPos}%`, minWidth:180, display:"flex", flexDirection:"column", overflow:"hidden" }}>
+        <div style={{ width:`${splitPos}%`, minWidth:180, display:"flex", flexDirection:"column", overflow:"hidden", borderRight:"none" }}>
 
           {/* Section header */}
-          <div style={{ padding:"5px 12px", fontSize:11, color:"#444", background:"#151515", borderBottom:"0.5px solid #222", textTransform:"uppercase", letterSpacing:"0.08em", display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
+          <div style={{ padding:"5px 12px", fontSize:11, color:"var(--c-dim)", background:"var(--c-surface-alt)", borderBottom:"0.5px solid var(--c-border-soft)", textTransform:"uppercase", letterSpacing:"0.08em", display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
             <span style={{ marginRight:"auto" }}>raw json</span>
             {rawMode === "edit" && (
               <span
                 onClick={() => openFind(false)}
                 title="Ctrl+F"
-                style={{ cursor:"pointer", fontSize:10, color: findOpen ? "#7a9ec0" : "#444", userSelect:"none" }}
+                style={{ cursor:"pointer", fontSize:10, color: findOpen ? "var(--c-active)" : "var(--c-dim)", userSelect:"none" }}
               >⌕ find</span>
             )}
             {rawMode === "view" && parsed !== null && (
               <>
-                <span onClick={rawExpandAll}   style={{ cursor:"pointer", fontSize:10, color:"#444", userSelect:"none" }}>expand all</span>
-                <span onClick={rawCollapseAll} style={{ cursor:"pointer", fontSize:10, color:"#444", userSelect:"none" }}>collapse all</span>
+                <span onClick={rawExpandAll}   style={{ cursor:"pointer", fontSize:10, color:"var(--c-dim)", userSelect:"none" }}>expand all</span>
+                <span onClick={rawCollapseAll} style={{ cursor:"pointer", fontSize:10, color:"var(--c-dim)", userSelect:"none" }}>collapse all</span>
               </>
             )}
             {parsed !== null && (
               <span
                 onClick={() => { setRawMode(m => m === "edit" ? "view" : "edit"); setFindOpen(false); }}
-                style={{ cursor:"pointer", fontSize:10, color: rawMode === "view" ? "#7a9ec0" : "#444", userSelect:"none", letterSpacing:"0.05em" }}
+                style={{ cursor:"pointer", fontSize:10, color: rawMode === "view" ? "var(--c-active)" : "var(--c-dim)", userSelect:"none", letterSpacing:"0.05em" }}
               >
                 {rawMode === "edit" ? "fold view" : "edit"}
               </span>
@@ -782,7 +800,7 @@ export default function App() {
 
           {/* Find / replace bar */}
           {findOpen && rawMode === "edit" && (
-            <div style={{ background:"#131313", borderBottom:"0.5px solid #222", padding:"6px 10px", display:"flex", flexDirection:"column", gap:5, flexShrink:0 }}>
+            <div style={{ background:"var(--c-find-bar)", borderBottom:"0.5px solid var(--c-border-soft)", padding:"6px 10px", display:"flex", flexDirection:"column", gap:5, flexShrink:0 }}>
               {/* Find row */}
               <div style={{ display:"flex", alignItems:"center", gap:5 }}>
                 <input
@@ -797,7 +815,7 @@ export default function App() {
                   style={findInputStyle}
                 />
                 {/* Match counter */}
-                <span style={{ fontSize:11, color:"#444", minWidth:54, textAlign:"center", letterSpacing:"0.03em" }}>
+                <span style={{ fontSize:11, color:"var(--c-dim)", minWidth:54, textAlign:"center", letterSpacing:"0.03em" }}>
                   {findMatches.length
                     ? `${findMatchIdx + 1} / ${findMatches.length}`
                     : findQuery ? <span style={{ color:"#7a3a3a" }}>no match</span> : ""}
@@ -808,13 +826,13 @@ export default function App() {
                 <button
                   onClick={() => setFindCase(c => !c)}
                   title="case sensitive"
-                  style={{ ...S.small, color: findCase ? "#7a9ec0" : "#555", borderColor: findCase ? "#3a5a7a" : "#333" }}
+                  style={{ ...S.small, color: findCase ? "var(--c-active)" : "var(--c-muted)", borderColor: findCase ? "var(--c-active)" : "var(--c-btn-border)" }}
                 >Aa</button>
                 {/* Toggle replace row */}
                 <button
                   onClick={() => setShowReplace(r => !r)}
                   title="toggle replace"
-                  style={{ ...S.small, color: showReplace ? "#7a9ec0" : "#555", borderColor: showReplace ? "#3a5a7a" : "#333", minWidth:18, textAlign:"center" }}
+                  style={{ ...S.small, color: showReplace ? "var(--c-active)" : "var(--c-muted)", borderColor: showReplace ? "var(--c-active)" : "var(--c-btn-border)", minWidth:18, textAlign:"center" }}
                 >{showReplace ? "−" : "+"}</button>
                 {/* Close */}
                 <button onClick={closeFind} style={{ ...S.small, paddingLeft:5, paddingRight:5 }}>✕</button>
@@ -844,14 +862,14 @@ export default function App() {
             ) : (
               <>
                 {highlightLine !== null && (
-                  <div style={{ position:"absolute", left:0, right:0, top: 12 + (highlightLine - 1) * 13 * 1.6, height: 13 * 1.6, background:"rgba(122,158,192,0.12)", pointerEvents:"none", zIndex:1 }}>
+                  <div style={{ position:"absolute", left:0, right:0, top: 12 + (highlightLine - 1) * 13 * 1.6, height: 13 * 1.6, background:"var(--c-line-bg)", pointerEvents:"none", zIndex:1 }}>
                     <div key={selectSeq} className="hl-flash" />
                   </div>
                 )}
                 <pre
                   ref={hlRef}
                   aria-hidden
-                  style={{ position:"absolute", inset:0, margin:0, padding:12, fontFamily:"monospace", fontSize:13, lineHeight:1.6, background:C.bg, color:C.text, overflow:"hidden", pointerEvents:"none", whiteSpace:"pre-wrap", wordBreak:"break-all", boxSizing:"border-box" }}
+                  style={{ position:"absolute", inset:0, margin:0, padding:12, fontFamily:"monospace", fontSize:13, lineHeight:1.6, background:"var(--c-bg)", color:"var(--c-text)", overflow:"hidden", pointerEvents:"none", whiteSpace:"pre-wrap", wordBreak:"break-all", boxSizing:"border-box" }}
                   dangerouslySetInnerHTML={{ __html: preHtml }}
                 />
                 <textarea
@@ -861,7 +879,7 @@ export default function App() {
                   onScroll={syncScroll}
                   spellCheck={false}
                   placeholder="Paste JSON here…"
-                  style={{ position:"absolute", inset:0, margin:0, padding:12, fontFamily:"monospace", fontSize:13, lineHeight:1.6, background:"transparent", color:"transparent", caretColor:C.text, border:"none", outline:"none", resize:"none", boxSizing:"border-box", overflow:"auto" }}
+                  style={{ position:"absolute", inset:0, margin:0, padding:12, fontFamily:"monospace", fontSize:13, lineHeight:1.6, background:"transparent", color:"transparent", caretColor:"var(--c-text)", border:"none", outline:"none", resize:"none", boxSizing:"border-box", overflow:"auto" }}
                 />
               </>
             )}
@@ -871,26 +889,26 @@ export default function App() {
         {/* ── Resize divider ──────────────────────────────────────────── */}
         <div
           onMouseDown={onDividerMouseDown}
-          style={{ width:4, flexShrink:0, cursor:"col-resize", background:"#1c1c1c", borderLeft:"0.5px solid #252525", borderRight:"0.5px solid #252525", transition:"background 0.15s" }}
-          onMouseEnter={e => e.currentTarget.style.background="#2a3a4a"}
-          onMouseLeave={e => e.currentTarget.style.background="#1c1c1c"}
+          style={{ width:4, flexShrink:0, cursor:"col-resize", background:"var(--c-divider-bg)", borderLeft:"0.5px solid var(--c-divider-brd)", borderRight:"0.5px solid var(--c-divider-brd)", transition:"background 0.15s" }}
+          onMouseEnter={e => e.currentTarget.style.background="var(--c-divider-hl)"}
+          onMouseLeave={e => e.currentTarget.style.background="var(--c-divider-bg)"}
         />
 
         {/* ── Tree preview panel ──────────────────────────────────────── */}
         <div style={{ flex:1, minWidth:180, display:"flex", flexDirection:"column", overflow:"hidden" }}>
-          <div style={{ padding:"5px 12px", fontSize:11, color:"#444", background:"#151515", borderBottom:"0.5px solid #222", textTransform:"uppercase", letterSpacing:"0.08em", display:"flex", alignItems:"center", gap:8 }}>
+          <div style={{ padding:"5px 12px", fontSize:11, color:"var(--c-dim)", background:"var(--c-surface-alt)", borderBottom:"0.5px solid var(--c-border-soft)", textTransform:"uppercase", letterSpacing:"0.08em", display:"flex", alignItems:"center", gap:8 }}>
             <span style={{ marginRight:"auto" }}>tree preview</span>
             {parsed !== null && (
               <>
-                <span onClick={treeExpandAll}   style={{ cursor:"pointer", fontSize:10, color:"#444", userSelect:"none" }}>expand all</span>
-                <span onClick={treeCollapseAll} style={{ cursor:"pointer", fontSize:10, color:"#444", userSelect:"none" }}>collapse all</span>
+                <span onClick={treeExpandAll}   style={{ cursor:"pointer", fontSize:10, color:"var(--c-dim)", userSelect:"none" }}>expand all</span>
+                <span onClick={treeCollapseAll} style={{ cursor:"pointer", fontSize:10, color:"var(--c-dim)", userSelect:"none" }}>collapse all</span>
               </>
             )}
           </div>
           <div style={{ flex:1, overflowY:"auto", padding:"10px 8px" }}>
             {parsed !== null
               ? <Node val={parsed} path={[]} root={parsed} onUpdate={onUpdate} treeForce={treeForce} onSelect={handleSelect} selectedPk={selectedPk} selectSeq={selectSeq} />
-              : <span style={{ color:"#333", fontSize:12, padding:12, display:"block" }}>Paste valid JSON on the left.</span>
+              : <span style={{ color:"var(--c-muted)", fontSize:12, padding:12, display:"block" }}>Paste valid JSON on the left.</span>
             }
           </div>
         </div>

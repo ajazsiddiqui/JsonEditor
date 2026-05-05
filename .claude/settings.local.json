@@ -18,7 +18,8 @@
       "Bash(node --input-type=module --eval \"import\\('./src/App.jsx'\\).catch\\(e=>console.error\\(e.message\\)\\)\")",
       "Bash(npx --yes acorn --ecma2022 --module src/App.jsx)",
       "Bash(npx acorn *)",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(powershell -Command \"Stop-Process -Name app -Force -ErrorAction SilentlyContinue; Stop-Process -Name JsonEditor -Force -ErrorAction SilentlyContinue\")"
     ]
   }
 }
