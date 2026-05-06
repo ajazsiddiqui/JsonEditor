@@ -718,7 +718,7 @@ export default function App() {
         style={{ display:"flex", alignItems:"center", gap:8, padding:"0 0 0 12px", background:"var(--c-surface)", borderBottom:"0.5px solid var(--c-border)", flexShrink:0, height:38, userSelect:"none" }}
       >
         <span data-tauri-drag-region style={{ fontSize:11, color:"var(--c-muted)", letterSpacing:"0.05em" }}>
-          JsonEditor made with ❤️ by ajazsiddiqui
+          JsonEditor made with ❤️ by <a href="https://ajazsiddiqui.com" target="_blank" rel="noopener noreferrer" style={{ color:"var(--c-muted)", textDecoration:"none", borderBottom:"0.5px solid var(--c-muted)" }}>ajazsiddiqui</a>
         </span>
         {currentFileName && (
           <span data-tauri-drag-region style={{ fontSize:11, color:"var(--c-ok)", opacity:0.75, letterSpacing:"0.03em", maxWidth:220, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
@@ -913,6 +913,23 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      {/* ── Product Hunt badge (web only) ───────────────────────────────── */}
+      {!appWindow && (
+        <a
+          href="https://www.producthunt.com/products/simple-json-editor?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-jsonedit-app"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ position:"fixed", bottom:16, right:16, zIndex:9999, lineHeight:0 }}
+        >
+          <img
+            alt="jsonedit.app - JSON Editor is a lightweight desktop tool for developers. | Product Hunt"
+            width="175"
+            height="38"
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1139082&theme=light&t=1778086510968"
+          />
+        </a>
+      )}
     </div>
   );
 }
