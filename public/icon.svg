@@ -1,14 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <!-- Background with rounded corners -->
   <rect width="512" height="512" rx="80" ry="80" fill="#111111"/>
   <rect width="512" height="512" rx="80" ry="80" fill="none" stroke="#2a2a2a" stroke-width="6"/>
-
-  <!-- Left brace { -->
-  <text x="158" y="300" font-family="monospace" font-size="300" font-weight="bold" fill="#7a9ec0" text-anchor="middle">{</text>
-
-  <!-- Right brace } -->
-  <text x="354" y="300" font-family="monospace" font-size="300" font-weight="bold" fill="#4a6a80" text-anchor="middle">}</text>
-
-  <!-- Green accent dot -->
-  <circle cx="256" cy="350" r="18" fill="#7ec27e"/>
+  <g transform="matrix(1, 0, 0, 1, 0.000008, 38.200008)">
+    <text x="158" y="297" font-family="monospace" font-size="300" font-weight="bold" fill="#7a9ec0" text-anchor="middle" style="white-space: pre;">{</text>
+    <text x="354" y="297" font-family="monospace" font-size="300" font-weight="bold" fill="#4a6a80" text-anchor="middle" style="white-space: pre;">}</text>
+    <circle cx="256" cy="347" r="18" fill="#7ec27e"/>
+  </g>
 </svg>
