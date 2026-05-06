@@ -914,6 +914,42 @@ export default function App() {
         </div>
       </div>
 
+      {/* ── Download bar (web only) ─────────────────────────────────────── */}
+      {!appWindow && (
+        <div style={{ position:"fixed", bottom:20, left:"50%", transform:"translateX(-50%)", zIndex:9998, display:"flex", alignItems:"center", gap:8, background:"var(--c-surface)", border:"0.5px solid var(--c-border)", borderRadius:32, padding:"6px 14px 6px 12px", boxShadow:"0 4px 24px rgba(0,0,0,0.18)" }}>
+          <span style={{ fontSize:10, color:"var(--c-muted)", letterSpacing:"0.08em", textTransform:"uppercase", marginRight:2 }}>Download</span>
+          <a
+            href="/downloads/JsonEditor_0.1.0_aarch64.dmg"
+            download
+            style={{ display:"flex", alignItems:"center", gap:6, background:"var(--c-btn-bg)", border:"0.5px solid var(--c-btn-border)", color:"var(--c-btn-text)", padding:"4px 12px", borderRadius:20, fontSize:11, fontFamily:"monospace", textDecoration:"none", cursor:"pointer", transition:"border-color 0.15s" }}
+            onMouseEnter={e => e.currentTarget.style.borderColor="var(--c-active)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor="var(--c-btn-border)"}
+          >
+            {/* Apple logo */}
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.37 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+            macOS
+          </a>
+          <a
+            href="/downloads/JsonEditor_0.1.0.zip"
+            download
+            style={{ display:"flex", alignItems:"center", gap:6, background:"var(--c-btn-bg)", border:"0.5px solid var(--c-btn-border)", color:"var(--c-btn-text)", padding:"4px 12px", borderRadius:20, fontSize:11, fontFamily:"monospace", textDecoration:"none", cursor:"pointer", transition:"border-color 0.15s" }}
+            onMouseEnter={e => e.currentTarget.style.borderColor="var(--c-active)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor="var(--c-btn-border)"}
+          >
+            {/* Windows 11 logo */}
+            <svg width="13" height="13" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4"  y="4"  width="37" height="37" rx="4" fill="#F25022"/>
+              <rect x="47" y="4"  width="37" height="37" rx="4" fill="#7FBA00"/>
+              <rect x="4"  y="47" width="37" height="37" rx="4" fill="#00A4EF"/>
+              <rect x="47" y="47" width="37" height="37" rx="4" fill="#FFB900"/>
+            </svg>
+            Windows
+          </a>
+        </div>
+      )}
+
       {/* ── Product Hunt badge (web only) ───────────────────────────────── */}
       {!appWindow && (
         <a
@@ -924,8 +960,8 @@ export default function App() {
         >
           <img
             alt="jsonedit.app - JSON Editor is a lightweight desktop tool for developers. | Product Hunt"
-            width="175"
-            height="38"
+            width="213"
+            height="46"
             src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1139082&theme=light&t=1778086510968"
           />
         </a>
